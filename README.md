@@ -14,41 +14,236 @@ Two or more request may be far from each other so can result in greater disk hea
 FCFS is the simplest of all the Disk Scheduling Algorithms. In FCFS, the requests are addressed in the order they arrive in the disk queue.
 ## PROGRAM:
 ```
+#include <stdio.h>
+#include <stdlib.h>
+int main()
+{
+    int RQ[100],i,n,TotalHeadMoment=0,initial;
+    printf ("Enter the number of Requests\n");
+    scanf("%d",&n);
+    printf("Enter the Requests sequence\n");
+    for(i=0;i<n;i++)
+    scanf("%d",&RQ[i]);
+    printf("Enter initial head position\n");
+    scanf("%d",&initial);
+    for(i=0;i<n;i++)
+    {
+        TotalHeadMoment=TotalHeadMoment+abs(RQ[i]-initial);
+        initial=RQ[i];
+    }
+    printf("Total head moment is %d",TotalHeadMoment);
+    return 0;
+}
+```
+## OUTPUT:
+![image](https://github.com/Reebak04/OS-EX.11-IMPLEMENTATION-OF-DISK-SCHEDULING-ALGORITHMS/assets/118364993/ca6c7625-3809-4fd7-9164-439cd880ff16)
+
+## RESULT:
+Thus the implementation of the program for first come first serve disc scheduling has been successfully executed
+## SHORTEST SEEK TIME FIRST
+## AIM:
+To write a program for the shortest seek time first method of disc scheduling.
+## PROGRAM:
+```
+#include<stdio.h>
+#include<stdlib.h>
+int main()
+{
+    int RQ[100],i,n,TotalHeadMoment=0,initial,count=0;
+    printf("Enter the number of Requests\n");
+    scanf("%d",&n);
+    printf("Enter the Requests sequence\n");
+    for(i=0;i<n;i++)
+    scanf("%d",&RQ[i]);
+    printf("Enter initial head position\n");
+    scanf("%d",&initial);
+    while(count!=n)
+    {
+        int min=1000,d,index;
+        for(i=0;i<n;i++)
+        {
+            d=abs(RQ[i]-initial);
+            if(min>d)
+            {
+                min=d;
+                index=i;
+            }
+        }
+        TotalHeadMoment=TotalHeadMoment+min;
+        initial=RQ[index];
+        RQ[index]=1000;
+        count++;
+    }
+    printf("Total head movement is %d",TotalHeadMoment);
+    return 0;
+}
+```
+## OUTPUT:
+![image](https://github.com/Reebak04/OS-EX.11-IMPLEMENTATION-OF-DISK-SCHEDULING-ALGORITHMS/assets/118364993/77e422f6-bbef-4637-9467-76e9c429e6fd)
+
+## RESULT:
+Thus the implementation of the program for shortest seek time first disc scheduling has been successfully executed.
+## SCAN
+## AIM:
+To write a program for the SCAN method of disc scheduling
+
+## PROGRAM:
+```
+#include<stdio.h>
+#include<stdlib.h>
+int main()
+{
+    int RQ[100],i,j,n,TotalHeadMoment=0,initial,size,move;
+    printf("Enter the number of Requests\n");
+    scanf("%d",&n);
+    printf("Enter the Requests sequence\n");
+    for(i=0;i<n;i++)
+    scanf("%d",&RQ[i]);
+    printf("Enter initial head position\n");
+    scanf("%d",&initial);
+    printf("Enter total disk size\n");
+    scanf("%d",&size);
+    printf("Enter the head movement direction for high 1 and for low 0\n");
+    scanf("%d",&move);
+    for(i=0;i<n;i++)
+    {
+        for(j=0;j<n-i-1;j++)
+        {
+            if(RQ[j]>RQ[j+1])
+            {
+                int temp;
+                temp=RQ[j];
+                RQ[j]=RQ[j+1];
+                RQ[j+1]=temp;
+            }
+        }
+    }
+    int index;
+    for(i=0;i<n;i++)
+    {
+        if(initial<RQ[i])
+        {
+            index=i;
+            break;
+        }
+    }
+    if(move==1)
+    {
+        for(i=index;i<n;i++)
+        {
+            TotalHeadMoment=TotalHeadMoment+abs(RQ[i]-initial);
+            initial=RQ[i];
+        }
+    
+        TotalHeadMoment=TotalHeadMoment+abs(size-RQ[i-1]-1);
+        initial = size-1;
+        for(i=index-1;i>=0;i--)
+        {
+            TotalHeadMoment=TotalHeadMoment+abs(RQ[i]-initial);
+            initial=RQ[i];
+        }
+    }
+    else
+    {
+        for(i=index-1;i>=0;i--)
+        {
+            TotalHeadMoment=TotalHeadMoment+abs(RQ[i]-initial);
+            initial=RQ[i];
+        }
+        TotalHeadMoment=TotalHeadMoment+abs(RQ[i+1]-0);
+        initial =0;
+        for(i=index;i<n;i++)
+        {
+            TotalHeadMoment=TotalHeadMoment+abs(RQ[i]-initial);
+            initial=RQ[i];
+        }
+    }
+        printf("Total head movement is %d",TotalHeadMoment);
+        return 0;
+}
 
 ```
 ## OUTPUT:
+![image](https://github.com/Reebak04/OS-EX.11-IMPLEMENTATION-OF-DISK-SCHEDULING-ALGORITHMS/assets/118364993/a29474a5-4a20-4884-8fe8-bb5ffdc1dd35)
 
 ## RESULT:
-
-## SHORTEST SEEK TIME FIRST
-## AIM:
-
-## ALGORITHM:
-
-## PROGRAM:
-
-## OUTPUT:
-
-## RESULT:
-
-## SCAN
-## AIM:
-
-## ALGORITHM:
-
-## PROGRAM:
-
-## OUTPUT:
-
-## RESULT:
-
+Thus the implementation of the program for SCAN disc scheduling has been successfully executed
 ## LOOK
 ## AIM:
-
-## ALGORITHM:
+To write a program for the LOOK method of disc scheduling.
 
 ## PROGRAM:
-
+```
+#include<stdio.h>
+#include<stdlib.h>
+int main()
+{
+    int RQ[100],i,j,n,TotalHeadMoment=0,initial,size,move;
+    printf("Enter the number of Requests\n");
+    scanf("%d",&n);
+    printf("Enter the Requests sequence\n");
+    for(i=0;i<n;i++)
+    scanf("%d",&RQ[i]);
+    printf("Enter initial head position\n");
+    scanf("%d",&initial);
+    printf("Enter total disk size\n");
+    scanf("%d",&size);
+    printf("Enter the head movement direction for high 1 and for low 0\n");
+    scanf("%d",&move);
+    for(i=0;i<n;i++)
+    {
+        for(j=0;j<n-i-1;j++)
+        {
+            if(RQ[j]>RQ[j+1])
+            {
+                int temp;
+                temp=RQ[j];
+                RQ[j]=RQ[j+1];
+                RQ[j+1]=temp;
+            }
+        }
+    }
+    int index;
+    for(i=0;i<n;i++)
+    {
+        if(initial<RQ[i])
+        {
+            index=i;
+            break;
+        }
+    }
+    if(move==1)
+    {
+        for(i=index;i<n;i++)
+        {
+            TotalHeadMoment=TotalHeadMoment+abs(RQ[i]-initial);
+            initial=RQ[i];
+        }
+        for(i=index-1;i>=0;i--)
+        {
+            TotalHeadMoment=TotalHeadMoment+abs(RQ[i]-initial);
+            initial=RQ[i];
+        }
+    }
+    else
+    {
+        for(i=index-1;i>=0;i--)
+        {
+            TotalHeadMoment=TotalHeadMoment+abs(RQ[i]-initial);
+            initial=RQ[i];
+        }
+        for(i=index;i<n;i++)
+        {
+            TotalHeadMoment=TotalHeadMoment+abs(RQ[i]-initial);
+            initial=RQ[i];
+        }
+    }
+    printf("Total head movement is %d",TotalHeadMoment);
+    return 0;
+}
+```
 ## OUTPUT:
+![image](https://github.com/Reebak04/OS-EX.11-IMPLEMENTATION-OF-DISK-SCHEDULING-ALGORITHMS/assets/118364993/0bd8c978-7dab-4aac-8e7d-b3676a2e76be)
 
 ## RESULT:
+Thus the implementation of the program for LOOK disc scheduling has been successfully executed.
